@@ -9,6 +9,6 @@ namespace Lesson_12.Interface
 {
     public interface IAccount<out T> where T : Account
     {
-        //T GetValue(object number, object balance);
+        
     }
 }

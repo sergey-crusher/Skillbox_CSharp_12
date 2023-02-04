@@ -81,16 +81,9 @@ namespace Lesson_12.Models
         #region Конструкторы
         public Client(string FullName, string INN, string Phone)
         {
-            if (String.IsNullOrEmpty(FullName) || String.IsNullOrEmpty(INN) || String.IsNullOrEmpty(Phone))
-            {
-                MessageBox.Show("Все поля должны быть заполнены!");
-            }
-            else
-            {
-                this.FullName = FullName;
-                this.INN = INN;
-                this.Phone = Phone;
-            }
+            this.FullName = FullName;
+            this.INN = INN;
+            this.Phone = Phone;
         }
         #endregion
 
@@ -99,11 +92,11 @@ namespace Lesson_12.Models
         /// </summary>
         /// <param name="FullName">ФИО</param>
         /// <param name="Phone">Телефон</param>
-        public void Update(string FullName, string Phone)
-        {
-            this.FullName = FullName;
-            this.Phone = Phone;
-        }
+        //public void Update(string FullName, string Phone)
+        //{
+        //    this.FullName = FullName;
+        //    this.Phone = Phone;
+        //}
         
         /// <summary>
         /// Добавление счёта
@@ -111,7 +104,7 @@ namespace Lesson_12.Models
         /// <typeparam name="T">Тип счёта</typeparam>
         /// <param name="account">Данные счёта</param>
         public void AddAccount<T>(T account) where T : Account
-        {            
+        { 
             this.Accounts.Add((IAccount<Account>)account);
         }
     }

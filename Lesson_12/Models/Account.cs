@@ -52,19 +52,37 @@ namespace Lesson_12.Models
             }
         }
         private object balance;
+
+        public string type => this.GetType().Name;
+
+        public object MyType
+        {
+            get
+            {
+                return myType;
+            }
+            set
+            {
+                if (myType != value)
+                {
+                    RaisePropertyChanged("MyType");
+                }
+            }
+        }
+        private object myType => this.GetType().Name;
         #endregion
 
         #region Конструкторы
+        public Account() { }
         public Account(object number, object balance)
         {
             Number = number;
             Balance = new Balance<object>(balance).Value;
         }
+        #endregion
 
-        public Deposit GetValue()
-        {
-            throw new NotImplementedException();
-        }
+        #region Методы
+
         #endregion
     }
 }

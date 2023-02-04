@@ -47,20 +47,27 @@ namespace Lesson_12.Models
         /// <param name="Phone">Телефон</param>
         public void Add(string FullName, string INN, string Phone)
         {
-            this.Add(new Client(FullName, INN, Phone));
+            if (!FindClient(INN, false))
+            {
+                this.Add(new Client(FullName, INN, Phone));
+            }
+            else
+            {
+                MessageBox.Show("Клиент с таким ИНН уже существует");
+            }
         }
 
         /// <summary>
         /// Обновление клиента
         /// </summary>
         /// <param name="client">Обновлённый экземпляр клиента</param>
-        public void Update(Client client)
-        {
-            if (FindClient(client.INN))
-            {
-                this.First(x => x.INN == client.INN).Update(client.FullName, client.Phone);
-            }
-        }
+        //public void Update(Client client)
+        //{
+        //    if (FindClient(client.INN))
+        //    {
+        //        this.First(x => x.INN == client.INN).Update(client.FullName, client.Phone);
+        //    }
+        //}
 
         /// <summary>
         /// Удаление клиента
@@ -93,7 +100,7 @@ namespace Lesson_12.Models
         /// </summary>
         /// <param name="INN">ИНН</param>
         /// <returns>true - если клиент существует</returns>
-        private bool FindClient(string INN)
+        private bool FindClient(string INN, bool MessageShow = true)
         {
             if (this.Count(x => x.INN == INN) > 0)
             {
@@ -101,7 +108,10 @@ namespace Lesson_12.Models
             }
             else
             {
-                MessageBox.Show($"Клиент с ИНН: \"{INN}\" не найден!");
+                if (MessageShow)
+                {
+                    MessageBox.Show($"Клиент с ИНН: \"{INN}\" не найден!");
+                }
                 return false;
             }
         }
