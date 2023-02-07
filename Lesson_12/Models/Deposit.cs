@@ -7,10 +7,24 @@ using System.Threading.Tasks;
 
 namespace Lesson_12.Models
 {
+    /// <summary>
+    /// Депозитный счёт
+    /// </summary>
     public class Deposit : Account, IAccount<Account>
     {
+        #region Конструкторы
         public Deposit(object number, object balance) : base(number, balance)
         {
         }
+        #endregion
+
+        #region Методы
+        public override void ReplenishBalance(decimal sum)
+        {
+            // За пополнение, бонус 50 у.е. для привлечения клиентов (чтобы видеть отличия)
+            sum += 50;
+            this.Balance = (decimal)this.Balance + sum;
+        }
+        #endregion
     }
 }

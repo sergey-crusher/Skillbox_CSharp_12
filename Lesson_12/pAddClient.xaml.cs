@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lesson_12.Models;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,6 +61,7 @@ namespace Lesson_12
             else
             {
                 MainWindow.clients.Add(FullName, INN, Phone);
+                MainWindow.CurrentClientINN = INN;
             }
         }
     }

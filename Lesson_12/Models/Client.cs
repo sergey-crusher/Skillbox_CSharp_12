@@ -1,4 +1,6 @@
 ﻿using Lesson_12.Interface;
+using Lesson_12.Models.ConvertJSON;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -75,6 +77,7 @@ namespace Lesson_12.Models
         /// <summary>
         /// Список счетов клиента
         /// </summary>
+        //[JsonConverter(typeof(ConcreteConverter<ObservableCollection<Account>>))]
         public ObservableCollection<IAccount<Account>> Accounts { get; set; }
         #endregion
 
@@ -85,19 +88,31 @@ namespace Lesson_12.Models
             this.INN = INN;
             this.Phone = Phone;
         }
+
+        public Client(string FullName, string INN, string Phone, ObservableCollection<AccountJSON> accounts)
+        {
+            this.FullName = FullName;
+            this.INN = INN;
+            this.Phone = Phone;
+            this.Accounts = new ObservableCollection<IAccount<Account>>();
+
+            if (accounts != null)
+            {
+                foreach (var acc in accounts)
+                {
+                    if (acc.MyType.ToString() == "Депозитный")
+                    {
+                        this.Accounts.Add(new Deposit(acc.Number, acc.Balance));
+                    }
+                    else
+                    {
+                        this.Accounts.Add(new NonDeposit(acc.Number, acc.Balance));
+                    }
+                }
+            }
+        }
         #endregion
 
-        /// <summary>
-        /// Обновление данных клиента
-        /// </summary>
-        /// <param name="FullName">ФИО</param>
-        /// <param name="Phone">Телефон</param>
-        //public void Update(string FullName, string Phone)
-        //{
-        //    this.FullName = FullName;
-        //    this.Phone = Phone;
-        //}
-        
         /// <summary>
         /// Добавление счёта
         /// </summary>
@@ -105,6 +120,10 @@ namespace Lesson_12.Models
         /// <param name="account">Данные счёта</param>
         public void AddAccount<T>(T account) where T : Account
         { 
+            if (this.Accounts == null)
+            {
+                this.Accounts = new ObservableCollection<IAccount<Account>>();
+            }
             this.Accounts.Add((IAccount<Account>)account);
         }
     }

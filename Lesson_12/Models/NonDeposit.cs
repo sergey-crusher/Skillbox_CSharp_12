@@ -7,10 +7,22 @@ using System.Threading.Tasks;
 
 namespace Lesson_12.Models
 {
+    /// <summary>
+    /// Недепозитный счёт
+    /// </summary>
     public class NonDeposit : Account, IAccount<Account>
     {
+        #region Конструкторы
         public NonDeposit(object number, object balance) : base(number, balance)
         {
         }
+        #endregion
+
+        #region Методы
+        public override void ReplenishBalance(decimal sum)
+        {
+            this.Balance = (decimal)this.Balance + sum;
+        }
+        #endregion
     }
 }

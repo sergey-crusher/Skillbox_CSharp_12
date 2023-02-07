@@ -1,4 +1,6 @@
 ﻿using Lesson_12.Interface;
+using Lesson_12.Models.ConvertJSON;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,15 +24,14 @@ namespace Lesson_12.Models
         public void Get()
         {
             // Считываем все данные клиентов (десериализуем их)
-            var load = JsonSerializer.Deserialize<ObservableCollection<Client>>(
+            var load = JsonConvert.DeserializeObject<ObservableCollection<ClientJSON>>(
                 File.ReadAllText("./clients_db.json"));
             // Добавляем клиентов из "базы"
             if (load.Count > 0)
             {
-                this.Clear();
                 foreach (var item in load)
                 {
-                    this.Add(item);
+                    this.Add(new Client(item.FullName, item.INN, item.Phone, item.Accounts));
                 }
             }
             else
@@ -58,16 +59,29 @@ namespace Lesson_12.Models
         }
 
         /// <summary>
-        /// Обновление клиента
+        /// Обновление данных клиента
         /// </summary>
-        /// <param name="client">Обновлённый экземпляр клиента</param>
-        //public void Update(Client client)
-        //{
-        //    if (FindClient(client.INN))
-        //    {
-        //        this.First(x => x.INN == client.INN).Update(client.FullName, client.Phone);
-        //    }
-        //}
+        /// <param name="clients">Список клиентов</param>
+        /// <param name="client">Клиент</param>
+        /// <param name="field">Поле</param>
+        /// <param name="value">Новое значение</param>
+        public void Update(
+            ref Clients clients,
+            Client client, 
+            string field,
+            object value)
+        {
+            foreach (var item in typeof(Client).GetProperties())
+            {
+                if (item.Name == field)
+                {
+                    client.GetType()
+                        .GetProperty(field)
+                        .SetValue(client, value);
+                    break;
+                }
+            }
+        }
 
         /// <summary>
         /// Удаление клиента
@@ -114,6 +128,15 @@ namespace Lesson_12.Models
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Сохрание изменений
+        /// </summary>
+        public void SaveChange()
+        {
+            string serialize = JsonConvert.SerializeObject(this);
+            File.WriteAllText("./clients_db.json", serialize);
         }
     }
 }

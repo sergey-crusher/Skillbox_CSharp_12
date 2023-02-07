@@ -10,7 +10,7 @@ namespace Lesson_12.Models
     /// <summary>
     /// Родительский класс для работы со счетами клиентов
     /// </summary>
-    public class Account : ViewModelBase
+    public class Account : ViewModelBase, IAccount<Account>
     {
         #region Свойства
         /// <summary>
@@ -53,13 +53,11 @@ namespace Lesson_12.Models
         }
         private object balance;
 
-        public string type => this.GetType().Name;
-
         public object MyType
         {
             get
             {
-                return myType;
+                return myType.ToString() == "Deposit" ? "Депозитный" : "Недепозитный";
             }
             set
             {
@@ -82,7 +80,10 @@ namespace Lesson_12.Models
         #endregion
 
         #region Методы
-
+        public virtual void ReplenishBalance(decimal sum)
+        {
+            ;
+        }
         #endregion
     }
 }
